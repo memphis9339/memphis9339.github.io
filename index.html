@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Memphis Bio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #070812;
+        --panel: rgba(14, 19, 34, 0.78);
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #e9eefc;
+        --muted: #9aa7c2;
+        --accent: #4cc9f0;
+        --accent2: #8a5cff;
+        --accent3: #ff4da6;
+        --shadow: 0 20px 70px rgba(0, 0, 0, 0.45);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at 20% 20%,
+            rgba(76, 201, 240, 0.1),
+            transparent 25%
+          ),
+          radial-gradient(
+            circle at 80% 15%,
+            rgba(138, 92, 255, 0.1),
+            transparent 24%
+          ),
+          radial-gradient(
+            circle at 50% 90%,
+            rgba(255, 77, 166, 0.1),
+            transparent 22%
+          ),
+          linear-gradient(180deg, #05070d 0%, #070b14 45%, #04050a 100%);
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-size: 64px 64px;
+      }
+      .wrap {
+        width: min(760px, calc(100% - 24px));
+        margin: 18px auto 24px;
+        position: relative;
+      }
+      .topbar,
+      .card {
+        border: 1px solid var(--line);
+        background: linear-gradient(
+          180deg,
+          rgba(14, 20, 38, 0.84),
+          rgba(9, 13, 25, 0.82)
+        );
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px 16px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+      }
+      .brand .logo {
+        width: 12px;
+        height: 12px;
+        border-radius: 4px;
+        background: linear-gradient(135deg, var(--accent), var(--accent3));
+        box-shadow: 0 0 18px rgba(76, 201, 240, 0.35);
+      }
+      .controls {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .btn {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        padding: 9px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+      .btn.active {
+        background: linear-gradient(
+          135deg,
+          rgba(76, 201, 240, 0.18),
+          rgba(138, 92, 255, 0.18)
+        );
+        border-color: rgba(76, 201, 240, 0.35);
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .stack {
+        display: grid;
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .hero {
+        padding: 26px 24px 22px;
+      }
+      .heroTop {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+      }
+
+      @property --a {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+      .avatar {
+        width: 96px;
+        height: 96px;
+        border-radius: 24px;
+        padding: 3px;
+        background: conic-gradient(
+          from var(--a),
+          #ff004c,
+          #ff7a00,
+          #ffe600,
+          #00e676,
+          #4cc9f0,
+          #8a5cff,
+          #ff4da6,
+          #ff004c
+        );
+        animation: snake 3s linear infinite;
+        flex-shrink: 0;
+      }
+      @keyframes snake {
+        to {
+          --a: 360deg;
+        }
+      }
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 21px;
+        display: block;
+        background: #0b1020;
+      }
+      .name {
+        font-family: "Unbounded", system-ui, sans-serif;
+        font-size: 42px;
+        line-height: 1;
+        letter-spacing: -1.6px;
+        margin: 0 0 10px;
+      }
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.85;
+        max-width: 58ch;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      .chip {
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--line);
+        color: #cfe0ff;
+        font-size: 12px;
+      }
+      .ghLink {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 12px;
+        transition: 0.2s ease;
+      }
+      .ghLink:hover {
+        color: var(--text);
+        border-color: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .section {
+        padding: 18px 20px;
+      }
+      .section h2 {
+        margin: 0 0 14px;
+        font-size: 14px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: #cdd8f7;
+      }
+      .bio {
+        font-size: 15px;
+        line-height: 1.85;
+        color: var(--text);
+      }
+      .bio p {
+        margin: 0 0 14px;
+      }
+      .bio b {
+        color: #fff;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .item {
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .item .k {
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .item .v {
+        font-size: 15px;
+        line-height: 1.6;
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      .copyBtn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--muted);
+        font-size: 12px;
+        cursor: pointer;
+        transition: 0.2s ease;
+        white-space: nowrap;
+      }
+      .copyBtn:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+      }
+      .copyBtn.copied {
+        border-color: rgba(76, 201, 240, 0.35);
+        color: var(--accent);
+      }
+
+      .codeContainer {
+        position: relative;
+        margin-top: 12px;
+      }
+      .codeInner {
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        max-height: 260px;
+        transition: max-height 0.4s ease;
+      }
+      .codeInner.expanded {
+        max-height: 9999px;
+      }
+      .codeHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+      .codeHeader span {
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      pre {
+        margin: 0;
+        padding: 16px;
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: #b7c7ff;
+        font-size: 12px;
+        line-height: 1.7;
+      }
+      .codeFade {
+        position: absolute;
+        bottom: 40px;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(9, 13, 25, 0.97)
+        );
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+      .codeFade.hidden-fade {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .showFullBtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+        margin-top: 8px;
+        padding: 10px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--muted);
+        font-size: 12px;
+        cursor: pointer;
+        transition: 0.2s ease;
+        letter-spacing: 0.08em;
+      }
+      .showFullBtn:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+      }
+      .showFullBtn svg {
+        transition: transform 0.3s ease;
+      }
+      .showFullBtn.expanded svg {
+        transform: rotate(180deg);
+      }
+
+      @media (max-width: 720px) {
+        .wrap {
+          width: min(100% - 14px, 760px);
+          margin: 10px auto;
+        }
+        .topbar {
+          padding: 12px;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .controls {
+          justify-content: flex-start;
+        }
+        .heroTop {
+          flex-direction: column;
+        }
+        .name {
+          font-size: 34px;
+        }
+        .avatar {
+          width: 78px;
+          height: 78px;
+          border-radius: 20px;
+        }
+        .hero,
+        .section {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="topbar">
+        <div class="brand">
+          <span class="logo"></span>
+          <span id="brandText">Memphis / profile</span>
+        </div>
+        <div class="controls">
+          <button class="btn active" id="langEn">EN</button>
+          <button class="btn" id="langRu">RU</button>
+          <button class="btn active" id="menuNormal">Normal</button>
+          <button class="btn" id="menuC">In C</button>
+        </div>
+      </header>
+
+      <div class="stack">
+        <main class="card hero">
+          <div class="heroTop">
+            <div class="avatar">
+              <img
+                src="https://avatars.githubusercontent.com/u/195314971?s=400&u=dfc48dad854346b3b7a765e76e2816c293c402c1&v=4"
+                alt="avatar"
+              />
+            </div>
+            <div>
+              <h1 class="name" id="title">Memphis</h1>
+              <p class="subtitle" id="lead">
+                i do android re, network protocol stuff and security-related
+                tooling.
+              </p>
+              <div class="chips">
+                <span class="chip">2024 → now</span>
+                <span class="chip">C / C++ / C#</span>
+                <span class="chip">Android RE</span>
+                <span class="chip">il2cpp games</span>
+                <a
+                  class="ghLink"
+                  href="https://github.com/memphis9339"
+                  target="_blank"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.929.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"
+                    />
+                  </svg>
+                  github.com/memphis9339
+                </a>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <section class="card section" id="bioNormal">
+          <h2 id="bioLabel">biography</h2>
+          <div class="bio">
+            <p id="bio1">
+              <b>hey — i'm memphis.</b> i take apart android apps, write network
+              protocols and build tools nobody asked for but someone probably
+              needs. started out in 2024, picked up C, C++ and C# not long
+              after. mostly il2cpp games and network stuff.
+            </p>
+          </div>
+        </section>
+
+        <section class="card section hidden" id="bioC">
+          <h2 style="margin: 0 0 14px">bio.c</h2>
+
+          <div
+            class="item"
+            style="
+              margin-bottom: 12px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 12px;
+            "
+          >
+            <div>
+              <div class="k">run</div>
+              <div class="v">gcc bio.c -o bio && ./bio</div>
+            </div>
+            <button class="copyBtn" id="copyRunBtn">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="9" y="9" width="13" height="13" rx="2" />
+                <path
+                  d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                />
+              </svg>
+              <span id="copyRunText">copy</span>
+            </button>
+          </div>
+
+          <div class="codeContainer">
+            <div class="codeInner" id="codeInner">
+              <div class="codeHeader">
+                <span>source</span>
+                <button class="copyBtn" id="copyBtn">
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                    <path
+                      d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                    />
+                  </svg>
+                  <span id="copyText">copy</span>
+                </button>
+              </div>
+              <pre>
+#define BIO_VERSION 0x0100 
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdint.h&gt;
+#include &lt;string.h&gt;
+
+typedef struct {
+    char* name;
+    char* description;
+    int rooted;
+    int androidver;
+    char* os;
+} Device;
+
+typedef struct {
+    char* nickname;// 0x0
+    int prog_since;// 0x8
+    uint32_t skills;// 0xC
+    char* github;// 0x10
+
+    char** active_projects;// 0x18
+    Device** devices;// 0x20
+
+    int (*print_bio)(void*);// 0x28
+} DevProfile;
+
+int print_bio(void* self) 
+{
+    char skills[256] = {0};
+    char version[16] = {0};
+
+    sprintf(version, "%d.%d", (BIO_VERSION >> 8), (BIO_VERSION &amp; 0xFF));
+    printf("welcome to my bio (v%s)!\n\n", version);
+
+    DevProfile* b = (DevProfile*)self;
+    printf("my nickname: %s\n", b-&gt;nickname);
+    printf("my github: %s\n", b-&gt;github);
+    printf("programming since %d\n\n", b-&gt;prog_since);
+
+    printf("my current projects:\n");
+    for (int i = 0; b-&gt;active_projects[i] != NULL; ++i) {
+        printf(" %s\n", b-&gt;active_projects[i]);
+    }
+    uint32_t mask = b-&gt;skills;
+
+    if (mask &amp; 0x1) strcat(skills, "C / ");
+    if (mask &amp; 0x2) strcat(skills, "C++ / ");
+    if (mask &amp; 0x4) strcat(skills, "C# / ");
+    if (mask &amp; 0x8) strcat(skills, "Android Reverse Engineering (prefer il2cpp games)");
+
+    printf("\nmy skills in programming:\n   %s.", skills);
+
+    printf("\n\nmy devices:\n");
+    for (Device** d = b-&gt;devices; *d; d++) {
+        Device* dev = *d;
+        char v[16] = {0}; 
+        if (dev-&gt;androidver != -1) sprintf(v, "Android %d ", dev-&gt;androidver);
+
+        printf(" [%ld] %s (%s)\n   OS: %s%s\n   root: %s\n\n", 
+            d - b-&gt;devices, dev-&gt;name, dev-&gt;description,
+            v, dev-&gt;os,
+            (dev-&gt;rooted == 0 ? "true" : "false"));
+    }
+
+    return 0;
+}
+
+int main() 
+{
+    DevProfile* p = malloc(sizeof(DevProfile));
+
+    *(char**)((char*)p) = "Memphis";
+    *(int*)((char*)p + 0x8) = 2024;
+    *(uint32_t*)((char*)p + 0xC) = 0x1 | 0x2 | 0x4 | 0x8;
+    *(char**)((char*)p + 0x10) = "github.com/memphis9339";
+    *(char***)((char*)p + 0x18) = (char*[]){"METH (network protocol)", "hLoader (android secure elf loader)", "MProtect-GUI (tool for native .dll protection)", NULL};
+
+    Device mi9t = {"Xiaomi Mi 9T Pro", "Main device", 0, 12, "Pixel Experience+"};
+    Device rn7 = {"Xiaomi Redmi Note 7", "2nd device", 0, 10, "CrDroid"};
+    Device pc = {"PC", "Main PC", -1, -1, "CachyOS hyprland with caelestia dots (arch user btw)"};
+    *(Device***)((char*)p + 0x20) = (Device*[]){&amp;mi9t, &amp;rn7, &amp;pc, NULL};
+
+    *(int (**)(void*))((char*)p + 0x28) = print_bio;
+
+    ((int (*)(void*))(*(void**)((char*)p + 0x28)))(p);
+}</pre
+              >
+            </div>
+            <div class="codeFade" id="codeFade"></div>
+            <button class="showFullBtn" id="showFullBtn">
+              <span id="showFullText">show full</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path
+                  d="M2.5 5L7 9.5L11.5 5"
+                  stroke="#9aa7c2"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="card section" id="projectsSection">
+          <h2 id="projTitle">current projects</h2>
+          <div class="grid">
+            <div class="item">
+              <div class="k">project</div>
+              <div class="v">
+                METH — network protocol written on C (Work In Progress)
+              </div>
+            </div>
+            <div class="item">
+              <div class="k">project</div>
+              <div class="v">hLoader — android secure elf loader</div>
+            </div>
+            <div class="item">
+              <div class="k">project</div>
+              <div class="v">MProtect-GUI — native .dll protection tool</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card section" id="devicesSection">
+          <h2>devices</h2>
+          <div class="grid">
+            <div class="item">
+              <div class="k">phone</div>
+              <div class="v">
+                Xiaomi Mi 9T Pro<br />Android 12 • Pixel Experience+ • rooted
+              </div>
+            </div>
+            <div class="item">
+              <div class="k">phone</div>
+              <div class="v">
+                Xiaomi Redmi Note 7<br />Android 10 • CrDroid • rooted
+              </div>
+            </div>
+            <div class="item">
+              <div class="k">pc</div>
+              <div class="v">
+                CachyOS Hyprland<br />caelestia dots • arch user btw
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      const en = {
+        title: "Memphis",
+        lead: "i do android re, network protocol stuff and security-related tooling.",
+        bio1: "<b>hey — i'm memphis.</b> i take apart android apps, write network protocols and build tools nobody asked for but someone probably needs. started out in 2024, picked up C, C++ and C# not long after. mostly il2cpp games and network stuff.",
+      };
+      const ru = {
+        title: "Memphis",
+        lead: "занимаюсь android re, сетевыми протоколами и security-инструментами.",
+        bio1: "<b>привет — я Memphis</b>. разбираю android-приложения, пишу сетевые протоколы и инструменты, которые никто не просил, но вдруг пригодятся. начал в 2024, позже изучил C, C++ и C#. в основном il2cpp игры и сетевое.",
+      };
+
+      function setLang(d) {
+        document.getElementById("title").textContent = d.title;
+        document.getElementById("lead").textContent = d.lead;
+        document.getElementById("bio1").innerHTML = d.bio1;
+      }
+
+      document.getElementById("langEn").onclick = () => {
+        setLang(en);
+        document.getElementById("langEn").classList.add("active");
+        document.getElementById("langRu").classList.remove("active");
+      };
+      document.getElementById("langRu").onclick = () => {
+        setLang(ru);
+        document.getElementById("langRu").classList.add("active");
+        document.getElementById("langEn").classList.remove("active");
+      };
+
+      document.getElementById("copyRunBtn").onclick = () => {
+        navigator.clipboard.writeText("gcc bio.c -o bio && ./bio").then(() => {
+          const btn = document.getElementById("copyRunBtn");
+          const text = document.getElementById("copyRunText");
+          btn.classList.add("copied");
+          text.textContent = "copied!";
+          setTimeout(() => {
+            btn.classList.remove("copied");
+            text.textContent = "copy";
+          }, 1000);
+        });
+      };
+
+      document.getElementById("copyBtn").onclick = () => {
+        const code = document.querySelector("#codeInner pre").textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          const btn = document.getElementById("copyBtn");
+          const text = document.getElementById("copyText");
+          btn.classList.add("copied");
+          text.textContent = "copied!";
+          setTimeout(() => {
+            btn.classList.remove("copied");
+            text.textContent = "copy";
+          }, 1000);
+        });
+      };
+
+      const projectsSection = document.getElementById("projectsSection");
+      const devicesSection = document.getElementById("devicesSection");
+      const bioNormal = document.getElementById("bioNormal");
+      const bioC = document.getElementById("bioC");
+      const menuNormal = document.getElementById("menuNormal");
+      const menuC = document.getElementById("menuC");
+      const codeInner = document.getElementById("codeInner");
+      const codeFade = document.getElementById("codeFade");
+      const showFullBtn = document.getElementById("showFullBtn");
+      const showFullText = document.getElementById("showFullText");
+      let codeExpanded = false;
+
+      showFullBtn.onclick = () => {
+        codeExpanded = !codeExpanded;
+        if (codeExpanded) {
+          codeInner.classList.add("expanded");
+          codeFade.classList.add("hidden-fade");
+          showFullBtn.classList.add("expanded");
+          showFullText.textContent = "collapse";
+        } else {
+          codeInner.classList.remove("expanded");
+          codeFade.classList.remove("hidden-fade");
+          showFullBtn.classList.remove("expanded");
+          showFullText.textContent = "show full";
+        }
+      };
+
+      function applyMenu(mode) {
+        if (mode === "c") {
+          projectsSection.classList.add("hidden");
+          devicesSection.classList.add("hidden");
+          bioNormal.classList.add("hidden");
+          bioC.classList.remove("hidden");
+          menuC.classList.add("active");
+          menuNormal.classList.remove("active");
+          codeExpanded = false;
+          codeInner.classList.remove("expanded");
+          codeFade.classList.remove("hidden-fade");
+          showFullBtn.classList.remove("expanded");
+          showFullText.textContent = "show full";
+        } else {
+          projectsSection.classList.remove("hidden");
+          devicesSection.classList.remove("hidden");
+          bioC.classList.add("hidden");
+          bioNormal.classList.remove("hidden");
+          menuNormal.classList.add("active");
+          menuC.classList.remove("active");
+        }
+      }
+
+      menuNormal.onclick = () => applyMenu("normal");
+      menuC.onclick = () => applyMenu("c");
+      applyMenu("normal");
+    </script>
+  </body>
+</html>
