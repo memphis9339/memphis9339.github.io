@@ -608,9 +608,9 @@ int main()
 
     *(char**)((char*)p) = "Memphis";
     *(int*)((char*)p + 0x8) = 2024;
-    *(uint32_t*)((char*)p + 0xC) = 0x1 | 0x2 | 0x4 | 0x8;
+    *(uint32_t*)((char*)p + 0xC) = 0x1 | 0x2 |a 0x4 | 0x8;
     *(char**)((char*)p + 0x10) = "github.com/memphis9339";
-    *(char***)((char*)p + 0x18) = (char*[]){"METH (network protocol)", "hLoader (android secure elf loader)", "MProtect-GUI (tool for native .dll protection)", NULL};
+    *(char***)((char*)p + 0x18) = (char*[]){"O-MVLL Plugin Fork", "METH (network protocol)", "hLoader (android secure elf loader)", "MProtect-GUI (tool for native .dll protection)", NULL};
 
     Device mi9t = {"Xiaomi Mi 9T Pro", "Main device", 0, 12, "Pixel Experience+"};
     Device rn7 = {"Xiaomi Redmi Note 7", "2nd device", 0, 10, "CrDroid"};
@@ -642,6 +642,13 @@ int main()
         <section class="card section" id="projectsSection">
           <h2 id="projTitle">current projects</h2>
           <div class="grid">
+            <div class="item">
+              <div class="k">project</div>
+              <div class="v">
+                O-MVLL Plugin fork — adding new obfuscation passes (JunkCode,
+                Virtualization)
+              </div>
+            </div>
             <div class="item">
               <div class="k">project</div>
               <div class="v">
